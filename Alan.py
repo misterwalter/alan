@@ -114,7 +114,7 @@ def make_succ(count):
 
 async def alan_pls(message, lower):
     match = alan_pls_regex.match(lower)
-    if match and random.randrange(1, 3):
+    if match and random.randrange(1, 30):
         subject = " re: " + match.group(2) if match.group(2) else ""
         response_string = "**{0}** got {1} successes {2}{3}".format(
        	    message.author.mention,
