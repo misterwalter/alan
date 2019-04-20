@@ -1,0 +1,22 @@
+echo
+
+#Add bot_admin example token
+if [ -e dads ]
+
+then 
+	echo "dads file exists, not overwriting"
+else
+	echo "Creating an example dads file, replace the mention tag with your own."
+	echo "<@!1234567890abcdefgh>" > dads
+fi
+
+# Add token example file - there's no good way to 
+if [ -e token ]
+then 
+	echo "token file exists, not overwriting"
+else
+	echo "Creating a token file, but you still need to add your bot's token!"
+	echo "Put your bot's token, not their Client ID or Client secret, into this file, replacing this text." > token
+fi
+
+echo
