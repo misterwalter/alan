@@ -61,12 +61,12 @@ async def on_reaction_remove(reaction, user):
 
 
 # General Utils ==============================================================
-async def slow_talk(message, response, initial_message="hmmmmmmmmm..."):
+async def slow_talk(message, response, initial_message="hmmmmmmmmm...", delay=5, spacing=2):
     msg = await message.channel.send(initial_message)
-    await asyncio.sleep(5)
+    await asyncio.sleep(delay)
     for i in range(len(response)+1):
         await msg.edit(content=response[:i])
-        await asyncio.sleep(2)
+        await asyncio.sleep(spacing)
 
 
 # Responses ==================================================================
@@ -93,6 +93,24 @@ class DontBeHasty:
             await slow_talk(
                 message,
                 "Now, don't be hasty young {}.".format(message.author.mention),
+            )
+            return True
+        return False
+
+
+class LaughAtFools:
+    regex = re.compile("(done)", re.IGNORECASE)
+    
+    async def command(self, message, lower):
+        match = self.regex.search(lower)
+        haha = "".join([random.choice(["H", "h"]) + random.choice(["A", "a"]) for c in range(random.randrange(10, 50))])
+        if match:
+            await slow_talk(
+                message,
+                haha,
+                initial_message=f"\"{match.group(1)}\"",
+                delay=3,
+                spacing=.5,
             )
             return True
         return False
@@ -143,6 +161,7 @@ class AlanPls:
 responses = [
     Standing(),
     DontBeHasty(),
+    LaughAtFools(),
     SaveFromChecks(),
     AlanPls(),
 ]
