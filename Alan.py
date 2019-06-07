@@ -25,10 +25,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    print("{}:{}{}:{}".format(
+    print("{}:{}{}:{}\n{}".format(
         message.author,
         message.guild.name+":" if message.guild else "",
         message.channel,
+        str(datetime.datetime.now()),
         message.content,
     ))
     # Never reply to yourself
