@@ -136,7 +136,7 @@ class SaveFromChecks:
 class AlanPls:
     regex = re.compile("^r(\d{1,3})(.*(pls|please).*)", re.IGNORECASE)
 
-    def make_succ(count):
+    def make_succ(self, count):
         result = "**"
         for i in range(count):
             result += f" [{random.randrange(3, 7)}]"
@@ -149,13 +149,13 @@ class AlanPls:
             response_string = "**{0}** got {1} successes {2}{3}".format(
                 message.author.mention,
                 match.group(1),
-                make_succ(int(match.group(1))),
+                self.make_succ(int(match.group(1))),
                 subject,
             )
 
-            await client.send_message(
-                message.channel,
-                response_string,
+            await message.channel.send(response_string)
+            return True
+        return False
             )
             return True
         return False
