@@ -6,9 +6,12 @@ import random
 import re
 import requests
 
-# Load account token from other file
+# Load account token and dads from other file
 token = open("token", "r").read().strip()
-dads = [open("dads", "r").read().strip()]
+with open("dads", "r") as dad_file:
+    dads = dad_file.readlines()
+dads = [x.strip() for x in dads] 
+
 
 # Global Initializations
 client = discord.Client()
