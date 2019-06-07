@@ -156,7 +156,26 @@ class AlanPls:
             await message.channel.send(response_string)
             return True
         return False
-            )
+
+
+class Oof:
+    regex = re.compile("^\*\*(<@[0-9]+>)\*\* got 0", re.IGNORECASE)
+
+    commiserations = [
+        "ooof",
+        "That's rough, {loser}",
+        "F",
+        "You tried, I guess",
+        ":(",
+    ]
+
+    async def command(self, message, lower):
+        match = self.regex.match(lower)
+        if match:
+            if True: # ADD CHANCE LATER
+                await message.channel.send(
+                    random.choice(self.commiserations).format(loser=match.group(1))
+                )
             return True
         return False
 
@@ -168,6 +187,7 @@ responses = [
     LaughAtFools(),
     SaveFromChecks(),
     AlanPls(),
+    Oof(),
 ]
 # Actually kicks things off ==================================================
 client.run(token)
