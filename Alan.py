@@ -180,7 +180,7 @@ class Oof:
                 await slow_talk(
                     message,
                     commiseration[0].format(loser=match.group(1)),
-                    intitial_message=commiseration[0].format(loser=match.group(1))[0]
+                    initial_message=commiseration[0].format(loser=match.group(1))[0]
                 )
             else:
                 await message.channel.send(
