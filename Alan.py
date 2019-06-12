@@ -162,19 +162,29 @@ class Oof:
     regex = re.compile("^\*\*(<@[0-9]+>)\*\* got 0", re.IGNORECASE)
 
     commiserations = [
-        "ooof",
-        "That's rough, {loser}",
-        "F",
-        "You tried, I guess",
-        ":(",
+        # (Response, whether to say slowly),
+        ("ooof", False),
+        ("That's rough, {loser}", False),
+        ("F", False),
+        ("F F F F F F F F F F F F F F F F F F F F F F F F", True),
+        ("You tried, I guess", False),
+        (":(", False),
+        ("Life is hard", False),
     ]
 
     async def command(self, message, lower):
         match = self.regex.match(lower)
         if match:
-            if True: # ADD CHANCE LATER
+            commiseration = random.choice(self.commiserations)
+            if commiseration[1]:
+                await slow_talk(
+                    message,
+                    commiseration[0].format(loser=match.group(1)),
+                    intitial_message=commiseration[0].format(loser=match.group(1))[0]
+                )
+            else:
                 await message.channel.send(
-                    random.choice(self.commiserations).format(loser=match.group(1))
+                    commiseration[0].format(loser=match.group(1))
                 )
             return True
         return False
