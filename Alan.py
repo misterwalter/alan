@@ -158,6 +158,26 @@ class AlanPls:
         return False
 
 
+class HomophoneHelper:
+
+    homophones = [
+        ("then", "than"),
+        ("there", "their", "they're"),
+        ("were", "we're"),
+        ("your", "you're"),
+    ]
+
+    async def command(self, message, lower):
+        matches = [cluster for cluster in self.homophones if [word for word in cluster if word in lower]]
+        if matches:
+            correction = random.choice([option for option in matches[0] if option not in lower])
+            await message.channel.send(
+                f"{message.author.mention} *{correction}",
+            )
+            return True
+        return False
+
+
 class Oof:
     regex = re.compile("^\*\*(<@[0-9]+>)\*\* got 0", re.IGNORECASE)
 
@@ -197,6 +217,7 @@ responses = [
     LaughAtFools(),
     SaveFromChecks(),
     AlanPls(),
+    HomophoneHelper(),
     Oof(),
 ]
 # Actually kicks things off ==================================================
