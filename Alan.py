@@ -168,9 +168,10 @@ class HomophoneHelper:
     ]
 
     async def command(self, message, lower):
-        matches = [cluster for cluster in self.homophones if [word for word in cluster if word in lower]]
+        lower_split = lower.split()
+        matches = [cluster for cluster in self.homophones if [word for word in cluster if word in lower_split]]
         if matches:
-            correction = random.choice([option for option in matches[0] if option not in lower])
+            correction = random.choice([option for option in matches[0] if option not in lower_split])
             await message.channel.send(
                 f"{message.author.mention} *{correction}",
             )
