@@ -240,6 +240,23 @@ class Question:
             return True
         return False
 
+class StealFace:
+
+    async def command(self, message, lower):
+        if random.randrange(1, 5) == 1:
+            member_me = message.author.guild.me
+            my_name = member_me.name
+            await member_me.edit(nick=message.author.name)
+
+            try:
+                await message.author.edit(nick=my_name)
+            except Exception as e:
+                print(f"Tried to steal {message.author.name}'s face, but only pirated it.")
+            return True
+        elif random.randrange(1, 15) == 1:
+            await message.author.guild.me.edit(nick="")
+        return False
+
 # Responses to try, in order. Each response returns True if it consumes the event,
 # Otherwise False is returned, and the next response is attempted.
 responses = [
@@ -251,6 +268,7 @@ responses = [
     AlanPls(),
     HomophoneHelper(),
     Oof(),
+    StealFace(),
 ]
 # Actually kicks things off ==================================================
 client.run(token)
