@@ -14,6 +14,7 @@ dads = [x.strip() for x in dads]
 
 
 # Global Initializations
+global client
 client = discord.Client()
 known_emoji = []
 
@@ -167,6 +168,8 @@ class HomophoneHelper:
         ("your", "you're"),
     ]
 
+    last = datetime.datetime.now()
+
     async def command(self, message, lower):
         lower_split = lower.split()
         matches = [cluster for cluster in self.homophones if [word for word in cluster if word in lower_split]]
@@ -210,11 +213,39 @@ class Oof:
             return True
         return False
 
+class Question:
+
+    defiance = [
+        # (Response, whether to say slowly),
+        ("{loser} No.", False),
+        ("{loser} k", False),
+        ("{loser} hmmmmmmmmmmmmm...let me think about it....", True),
+    ]
+
+    async def command(self, message, lower):
+        regex = re.compile(f"^{client.user.mention}.*[?!]", re.IGNORECASE)
+        match = regex.match(lower)
+        if match and random.randrange(1, 3) == 1:
+            defiance = random.choice(self.defiance)
+            if defiance[1]:
+                await slow_talk(
+                    message,
+                    defiance[0].format(loser=message.author.mention),
+                    initial_message="uhhhhhhh",
+                )
+            else:
+                await message.channel.send(
+                    defiance[0].format(loser=message.author.mention)
+                )
+            return True
+        return False
+
 # Responses to try, in order. Each response returns True if it consumes the event,
 # Otherwise False is returned, and the next response is attempted.
 responses = [
     Standing(),
     DontBeHasty(),
+    Question(),
     LaughAtFools(),
     SaveFromChecks(),
     AlanPls(),
