@@ -246,12 +246,12 @@ class StealFace:
         if random.randrange(1, 5) == 1:
             member_me = message.author.guild.me
             my_name = member_me.name
-            await member_me.edit(nick=message.author.name)
+            await member_me.edit(nick=message.author.nick)
 
             try:
                 await message.author.edit(nick=my_name)
             except Exception as e:
-                print(f"Tried to steal {message.author.name}'s face, but only pirated it.")
+                print(f"Tried to steal {message.author.nick}'s face, but only pirated it.")
             return True
         elif random.randrange(1, 15) == 1:
             await message.author.guild.me.edit(nick="")
