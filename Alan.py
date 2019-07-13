@@ -284,7 +284,8 @@ class StealFace:
         if random.randrange(1, 5) == 1:
             member_me = message.author.guild.me
             my_name = member_me.name
-            await member_me.edit(nick=message.author.nick)
+            new_name = message.author.nick or message.author.name
+            await member_me.edit(nick=new_name)
 
             try:
                 await message.author.edit(nick=my_name)
