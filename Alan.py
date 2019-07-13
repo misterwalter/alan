@@ -46,9 +46,10 @@ async def on_message(message):
     lower = message.content.lower()
 
     for response in responses:
-        print(response)
+        print(type(response).__name__, end=" | ")
         if await response.command(message, lower):
             break
+    print()
 
 
 # These should be their own class
