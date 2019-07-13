@@ -66,7 +66,7 @@ async def on_reaction_remove(reaction, user):
 
 
 # General Utils ==============================================================
-async def slow_talk(message, response, initial_message="hmmmmmmmmm...", delay=5, spacing=2):
+async def slow_talk(message, response, initial_message="hmmmmmmmmm...", delay=4, spacing=2):
     msg = await message.channel.send(initial_message)
     await asyncio.sleep(delay)
     for i in range(len(response)+1):
@@ -240,6 +240,28 @@ class Question:
             return True
         return False
 
+class PleaseClap:
+
+    async def command(self, message, lower):
+        slow = "slow clap" in lower
+        if "please clap" in lower or slow:
+            text = ":clap:"
+            msg = await message.channel.send(text)
+            try:
+                while True:
+                    text += ":clap:"
+                    await msg.edit(content=text)
+                    if slow:
+                        await asyncio.sleep(1)
+                        print("SLOW CLAPPING")
+                    else:
+                        await asyncio.sleep(.3)
+                        print("CLAPPING")
+            except Exception:
+                return True
+            return True
+        return False
+
 class StealFace:
 
     async def command(self, message, lower):
@@ -268,6 +290,7 @@ responses = [
     AlanPls(),
     HomophoneHelper(),
     Oof(),
+    PleaseClap(),
     StealFace(),
 ]
 # Actually kicks things off ==================================================
