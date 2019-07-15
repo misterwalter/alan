@@ -183,7 +183,7 @@ class HomophoneHelper:
     last = datetime.datetime.now()
 
     async def command(self, message, lower):
-        if random.randrange(1, 20) == 1:
+        if not random.randrange(1, 20) == 1:
             return False # Good jeezy this got annoying fast
 
         lower_split = lower.split()
