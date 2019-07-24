@@ -285,7 +285,7 @@ class PleaseClap:
 
 class StealFace:
     async def command(self, message, lower):
-        if random.randrange(1, 100) == 1:
+        if random.randrange(1, 500) == 1:
             member_me = message.author.guild.me
             my_name = member_me.name
             new_name = message.author.nick or message.author.name
