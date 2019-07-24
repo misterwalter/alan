@@ -285,7 +285,7 @@ class PleaseClap:
 
 class StealFace:
     async def command(self, message, lower):
-        if random.randrange(1, 5) == 1:
+        if random.randrange(1, 100) == 1:
             member_me = message.author.guild.me
             my_name = member_me.name
             new_name = message.author.nick or message.author.name
@@ -298,8 +298,6 @@ class StealFace:
                     f"Tried to steal {message.author.nick}'s face, but only pirated it."
                 )
             return True
-        elif random.randrange(1, 15) == 1:
-            await message.author.guild.me.edit(nick="")
         return False
 
 
