@@ -98,10 +98,42 @@ class Standing:
             return True
         return False
 
+class IgnoreMe:
+    regex = re.compile(f"{client.user.mention}.*(fuck off|let me live|go away)", re.IGNORECASE)
+
+    def __init__(self):
+        try:
+            with open("ignored_users", "r") as ignore_file:
+                ignored_lines = ignore_file.readlines()
+            self.ignored_users = set([x.strip() for x in ignored_lines])
+        except Exception as e:
+            print(e)
+            self.ignored_users = set()
+
+    async def commmand(self, message, lower):
+        if client.user.mention in lower and message.author.id in ignored_users:
+            ignored_users.remove(message.author.id)
+            self.save()
+            message.channel.send(f"{message.author.mention}!!!")
+            await asyncio.sleep(1)
+            message.channel.send("<3")
+            return False
+        elif regex.search(lower):
+            message.channel.send(content="Oh shit, I'm sorry.")
+            ignored_users.add(message.author.id)
+            self.save()
+            return True
+        else:
+            return False
+
+    def save(self):
+        with open("ignored_users", "w") as ignore_file:
+            for ignore_id in self.ignored_users:
+
 
 class DontBeHasty:
     async def command(self, message, lower):
-        if "now" in lower and random.randrange(1, 10) is 1:
+        if "now" in lower and random.randrange(1, 50) is 1:
             await slow_talk(
                 message, "Now, don't be hasty young {}.".format(message.author.mention)
             )
@@ -114,13 +146,13 @@ class LaughAtFools:
 
     async def command(self, message, lower):
         match = self.regex.search(lower)
-        haha = "".join(
-            [
-                random.choice(["H", "h"]) + random.choice(["A", "a"])
-                for c in range(random.randrange(10, 50))
-            ]
-        )
-        if match:
+        if match and random.randrange(1, 10) == 1:
+            haha = "".join(
+                [
+                    random.choice(["H", "h"]) + random.choice(["A", "a"])
+                    for c in range(random.randrange(10, 50))
+                ]
+            )
             await slow_talk(
                 message,
                 haha,
@@ -157,7 +189,7 @@ class AlanPls:
 
     async def command(self, message, lower):
         match = self.regex.match(lower)
-        if match and random.randrange(1, 30):
+        if match and random.randrange(1, 30) == 1:
             subject = " re: " + match.group(2) if match.group(2) else ""
             response_string = "**{0}** got {1} successes {2}{3}".format(
                 message.author.mention,
@@ -183,7 +215,7 @@ class HomophoneHelper:
     last = datetime.datetime.now()
 
     async def command(self, message, lower):
-        if not random.randrange(1, 20) == 1:
+        if not random.randrange(1, 50) == 1:
             return False # Good jeezy this got annoying fast
 
         lower_split = lower.split()
@@ -217,7 +249,7 @@ class Oof:
 
     async def command(self, message, lower):
         match = self.regex.match(lower)
-        if match:
+        if match and random.randrange(1, 5) == 1:
             commiseration = random.choice(self.commiserations)
             if commiseration[1]:
                 await slow_talk(
@@ -305,6 +337,7 @@ class StealFace:
 # Otherwise False is returned, and the next response is attempted.
 responses = [
     Standing(),
+    IgnoreMe(),
     DontBeHasty(),
     Question(),
     LaughAtFools(),
