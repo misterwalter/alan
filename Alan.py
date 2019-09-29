@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+from pprint import pprint
 import random
 import re
 
@@ -99,28 +100,33 @@ class Standing:
         return False
 
 class IgnoreMe:
-    regex = re.compile(f"{client.user.mention}.*(fuck off|let me live|go away)", re.IGNORECASE)
+    regex = re.compile(f"Alan.*(fuck off|let me live|go away)", re.IGNORECASE)
 
     def __init__(self):
         try:
             with open("ignored_users", "r") as ignore_file:
                 ignored_lines = ignore_file.readlines()
             self.ignored_users = set([x.strip() for x in ignored_lines])
+            pprint(self.ignored_users)
         except Exception as e:
             print(e)
             self.ignored_users = set()
 
-    async def commmand(self, message, lower):
-        if client.user.mention in lower and message.author.id in ignored_users:
-            ignored_users.remove(message.author.id)
+    async def command(self, message, lower):
+        print(f"MENTION: {client.user.mention}")
+        print(f"LOWER: {lower}")
+        if client.user.mention in lower and message.author.id in self.ignored_users:
+            self.ignored_users.remove(message.author.id)
             self.save()
-            message.channel.send(f"{message.author.mention}!!!")
+            await message.channel.send(f"{message.author.mention}!!!")
             await asyncio.sleep(1)
-            message.channel.send("<3")
+            await message.channel.send("<3")
             return False
-        elif regex.search(lower):
-            message.channel.send(content="Oh shit, I'm sorry.")
-            ignored_users.add(message.author.id)
+        elif message.author.id in self.ignored_users:
+            return True # Eat the event
+        elif self.regex.search(lower):
+            await message.channel.send(content="Oh shit, I'm sorry.")
+            self.ignored_users.add(message.author.id)
             self.save()
             return True
         else:
@@ -129,7 +135,7 @@ class IgnoreMe:
     def save(self):
         with open("ignored_users", "w") as ignore_file:
             for ignore_id in self.ignored_users:
-
+                ignore_file.write(str(ignore_id)+"\n")
 
 class DontBeHasty:
     async def command(self, message, lower):
