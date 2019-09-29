@@ -3,6 +3,7 @@ dads
 token
 *.log
 *.swp
+ignored_users
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
