@@ -144,19 +144,42 @@ class IgnoreMe:
             for ignore_id in self.ignored_users:
                 ignore_file.write(str(ignore_id)+"\n")
 
+from random import choice
+from collections import defaultdict
 class FeelingsDotExe:
+
+    retry_count = 5
 
     def __init__(self):
         self.anal = SentimentIntensityAnalyzer()
+        self.sentimantcher = defaultdict(list)
+        for e in EMOJI_ALIAS_UNICODE:
+            self.sentimantcher[round(self.anal.polarity_scores(e[1:-1].replace("_", " "))['compound'], 2)].append(e)
+        del self.sentimantcher[0.0] # Yachttsy
+        print(f"SENTIMATNCHDFSKJ IS {len(self.sentimantcher)} LONG")
+        pprint(self.sentimantcher)
 
     async def command(self, message, lower):
+        reactions_to_send = []
         words = lower.split()
         [ words.append(f'{w1}_{w2}') for w1, w2 in zip(words, words[1:]) ]
-        #print(self.anal.polarity_scores(message.content))
         # Check single words
         for word in words:
             if f":{word}:" in EMOJI_ALIAS_UNICODE:
-                await message.add_reaction(EMOJI_ALIAS_UNICODE[f":{word}:"])
+                reactions_to_send.append(f":{word}:")
+
+        # Add sentimental
+        reaction = self.sentimantcher[round(self.anal.polarity_scores(message.content)['compound'], 2)]
+        print(reaction)
+        if reaction:
+            reactions_to_send.append(choice(reaction))
+
+        for react in reactions_to_send:
+            try:
+                await message.add_reaction(EMOJI_ALIAS_UNICODE[react])
+            except:
+                print(f"FAILED EMOJI: {react}")
+
 
 class DontBeHasty:
     async def command(self, message, lower):
