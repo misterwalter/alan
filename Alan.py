@@ -3,8 +3,11 @@ import datetime
 from pprint import pprint
 import random
 import re
+import time
 
 import discord
+from emoji import EMOJI_ALIAS_UNICODE, EMOJI_UNICODE, UNICODE_EMOJI, UNICODE_EMOJI_ALIAS
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Load account token and dads from other file
 token = open("token", "r").read().strip()
@@ -17,6 +20,10 @@ dads = [x.strip() for x in dads]
 global client
 client = discord.Client()
 known_emoji = []
+
+# Process Dictionaries
+EMOJI_ALIAS_UNICODE = {k.lower():v for k, v in EMOJI_ALIAS_UNICODE.items()}
+
 
 # Events =====================================================================
 @client.event
@@ -136,6 +143,20 @@ class IgnoreMe:
         with open("ignored_users", "w") as ignore_file:
             for ignore_id in self.ignored_users:
                 ignore_file.write(str(ignore_id)+"\n")
+
+class FeelingsDotExe:
+
+    def __init__(self):
+        self.anal = SentimentIntensityAnalyzer()
+
+    async def command(self, message, lower):
+        words = lower.split()
+        [ words.append(f'{w1}_{w2}') for w1, w2 in zip(words, words[1:]) ]
+        #print(self.anal.polarity_scores(message.content))
+        # Check single words
+        for word in words:
+            if f":{word}:" in EMOJI_ALIAS_UNICODE:
+                await message.add_reaction(EMOJI_ALIAS_UNICODE[f":{word}:"])
 
 class DontBeHasty:
     async def command(self, message, lower):
@@ -344,6 +365,7 @@ class StealFace:
 responses = [
     Standing(),
     IgnoreMe(),
+    FeelingsDotExe(),
     DontBeHasty(),
     Question(),
     LaughAtFools(),
