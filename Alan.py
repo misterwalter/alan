@@ -1,4 +1,5 @@
 import asyncio
+from collections import defaultdict
 import datetime
 from pprint import pprint
 import random
@@ -144,8 +145,6 @@ class IgnoreMe:
             for ignore_id in self.ignored_users:
                 ignore_file.write(str(ignore_id)+"\n")
 
-from random import choice
-from collections import defaultdict
 class FeelingsDotExe:
 
     retry_count = 5
@@ -163,6 +162,7 @@ class FeelingsDotExe:
         reactions_to_send = []
         words = lower.split()
         [ words.append(f'{w1}_{w2}') for w1, w2 in zip(words, words[1:]) ]
+        words = [word for word in words if len(word) > 2]
         # Check single words
         for word in words:
             if f":{word}:" in EMOJI_ALIAS_UNICODE:
@@ -172,13 +172,14 @@ class FeelingsDotExe:
         reaction = self.sentimantcher[round(self.anal.polarity_scores(message.content)['compound'], 2)]
         print(reaction)
         if reaction:
-            reactions_to_send.append(choice(reaction))
+            reactions_to_send.append(random.choice(reaction))
 
         for react in reactions_to_send:
             try:
                 await message.add_reaction(EMOJI_ALIAS_UNICODE[react])
             except:
                 print(f"FAILED EMOJI: {react}")
+        return False # Never consume the event
 
 
 class DontBeHasty:
