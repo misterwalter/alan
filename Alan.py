@@ -4,10 +4,9 @@ import datetime
 from pprint import pprint
 import random
 import re
-import time
 
 import discord
-from emoji import EMOJI_ALIAS_UNICODE, EMOJI_UNICODE, UNICODE_EMOJI, UNICODE_EMOJI_ALIAS
+from emoji import EMOJI_ALIAS_UNICODE
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Load account token and dads from other file
@@ -23,7 +22,7 @@ client = discord.Client()
 known_emoji = []
 
 # Process Dictionaries
-EMOJI_ALIAS_UNICODE = {k.lower():v for k, v in EMOJI_ALIAS_UNICODE.items()}
+EMOJI_ALIAS_UNICODE = {k.lower(): v for k, v in EMOJI_ALIAS_UNICODE.items()}
 
 
 # Events =====================================================================
@@ -107,6 +106,7 @@ class Standing:
             return True
         return False
 
+
 class IgnoreMe:
     regex = re.compile(f"Alan.*(fuck off|let me live|go away)", re.IGNORECASE)
 
@@ -131,7 +131,7 @@ class IgnoreMe:
             await message.channel.send("<3")
             return False
         elif message.author.id in self.ignored_users:
-            return True # Eat the event
+            return True  # Eat the event
         elif self.regex.search(lower):
             await message.channel.send(content="Oh shit, I'm sorry.")
             self.ignored_users.add(message.author.id)
@@ -143,7 +143,8 @@ class IgnoreMe:
     def save(self):
         with open("ignored_users", "w") as ignore_file:
             for ignore_id in self.ignored_users:
-                ignore_file.write(str(ignore_id)+"\n")
+                ignore_file.write(str(ignore_id) + "\n")
+
 
 class FeelingsDotExe:
 
@@ -153,15 +154,20 @@ class FeelingsDotExe:
         self.anal = SentimentIntensityAnalyzer()
         self.sentimantcher = defaultdict(list)
         for e in EMOJI_ALIAS_UNICODE:
-            self.sentimantcher[round(self.anal.polarity_scores(e[1:-1].replace("_", " "))['compound'], 2)].append(e)
-        del self.sentimantcher[0.0] # Yachttsy
+            self.sentimantcher[
+                round(
+                    self.anal.polarity_scores(e[1:-1].replace("_", " "))["compound"], 2
+                )
+            ].append(e)
+        del self.sentimantcher[0.0]  # Yachttsy
         print(f"SENTIMATNCHDFSKJ IS {len(self.sentimantcher)} LONG")
         pprint(self.sentimantcher)
 
     async def command(self, message, lower):
         reactions_to_send = []
         words = lower.split()
-        [ words.append(f'{w1}_{w2}') for w1, w2 in zip(words, words[1:]) ]
+        for word1, word2 in zip(words, words[1:]):
+            words.append(f"{word1}_{word2}")
         words = [word for word in words if len(word) > 2]
         # Check single words
         for word in words:
@@ -169,7 +175,9 @@ class FeelingsDotExe:
                 reactions_to_send.append(f":{word}:")
 
         # Add sentimental
-        reaction = self.sentimantcher[round(self.anal.polarity_scores(message.content)['compound'], 2)]
+        reaction = self.sentimantcher[
+            round(self.anal.polarity_scores(message.content)["compound"], 2)
+        ]
         print(reaction)
         if reaction:
             reactions_to_send.append(random.choice(reaction))
@@ -179,12 +187,12 @@ class FeelingsDotExe:
                 await message.add_reaction(EMOJI_ALIAS_UNICODE[react])
             except:
                 print(f"FAILED EMOJI: {react}")
-        return False # Never consume the event
+        return False  # Never consume the event
 
 
 class DontBeHasty:
     async def command(self, message, lower):
-        if "now" in lower and random.randrange(1, 50) is 1:
+        if "now" in lower and random.randrange(1, 20) is 1:
             await slow_talk(
                 message, "Now, don't be hasty young {}.".format(message.author.mention)
             )
@@ -266,8 +274,8 @@ class HomophoneHelper:
     last = datetime.datetime.now()
 
     async def command(self, message, lower):
-        if not random.randrange(1, 50) == 1:
-            return False # Good jeezy this got annoying fast
+        if random.randrange(1, 50) != 1:
+            return False  # Good jeezy this got annoying fast
 
         lower_split = lower.split()
         matches = [
