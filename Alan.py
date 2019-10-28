@@ -189,6 +189,25 @@ class FeelingsDotExe:
                 print(f"FAILED EMOJI: {react}")
         return False  # Never consume the event
 
+class Blizzard:
+    keywords = [
+        "blizzard",
+        "diablo",
+        "hearthstone",
+        "heroes of the storm", # Yeah, cuz people are gonna type all that out.
+        "hots",
+        "overwatch",
+        "starcraft",
+        "nba",
+        "warcraft",
+    ]
+
+    async def command(self, message, lower):
+        for keyword in self.keywords:
+            if keyword in lower:
+                await message.add_reaction("🇭🇰")
+                return True
+        return False
 
 class DontBeHasty:
     async def command(self, message, lower):
@@ -398,6 +417,7 @@ responses = [
     Standing(),
     IgnoreMe(),
     FeelingsDotExe(),
+    Blizzard(),
     DontBeHasty(),
     Question(),
     LaughAtFools(),
