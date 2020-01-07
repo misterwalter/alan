@@ -189,6 +189,20 @@ class FeelingsDotExe:
                 print(f"FAILED EMOJI: {react}")
         return False  # Never consume the event
 
+class Counting:
+
+    async def command(self, message, lower):
+        if random.randrange(1, 4) == 1 and "count" in message.channel.name:
+            try:
+                previous_number = int(lower)
+                async with message.channel.typing():
+                    await asyncio.sleep(random.randrange(1, 4))
+                    await message.channel.send(f"{previous_number + 1}{'  xD' if previous_number == 68 or previous_number == 419 else ''}")
+                return True
+            except ValueError:
+                return False
+        return False
+
 class Blizzard:
     keywords = [
         "blizzard",
@@ -417,6 +431,7 @@ responses = [
     Standing(),
     IgnoreMe(),
     FeelingsDotExe(),
+    Counting(),
     Blizzard(),
     DontBeHasty(),
     Question(),
