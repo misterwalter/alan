@@ -32,6 +32,23 @@ async def on_ready():
     print(client.user.name, client.user.mention)
     print(client.user.id)
     print("--------")
+    # Responses to try, in order. Each response returns True if it consumes the event,
+    # Otherwise False is returned, and the next response is attempted.
+    client.alan_responses = [
+        Standing(),
+        IgnoreMe(),
+        FeelingsDotExe(),
+        Counting(),
+        Blizzard(),
+        DontBeHasty(),
+        Question(),
+        LaughAtFools(),
+        SaveFromChecks(),
+        AlanPls(),
+        HomophoneHelper(),
+        Oof(),
+        PleaseClap(),
+    ]
 
 
 @client.event
@@ -53,7 +70,7 @@ async def on_message(message):
     # Most commands need this, might as well cache it
     lower = message.content.lower()
 
-    for response in responses:
+    for response in client.alan_responses:
         print(type(response).__name__, end=" | ")
         if await response.command(message, lower):
             break
@@ -108,22 +125,21 @@ class Standing:
 
 
 class IgnoreMe:
-    regex = re.compile(f"Alan.*(fuck off|let me live|go away)", re.IGNORECASE)
 
     def __init__(self):
+        restr = f"({client.user.id}|Alan).*(fuck off|let me live|go away)"
+        self.regex = re.compile(restr, re.IGNORECASE)
         try:
             with open("ignored_users", "r") as ignore_file:
                 ignored_lines = ignore_file.readlines()
-            self.ignored_users = set([x.strip() for x in ignored_lines])
+            self.ignored_users = set([int(x.strip())for x in ignored_lines])
             pprint(self.ignored_users)
         except Exception as e:
             print(e)
             self.ignored_users = set()
 
     async def command(self, message, lower):
-        print(f"MENTION: {client.user.mention}")
-        print(f"LOWER: {lower}")
-        if client.user.mention in lower and message.author.id in self.ignored_users:
+        if str(client.user.id) in lower and message.author.id in self.ignored_users:
             self.ignored_users.remove(message.author.id)
             self.save()
             await message.channel.send(f"{message.author.mention}!!!")
@@ -148,8 +164,6 @@ class IgnoreMe:
 
 class FeelingsDotExe:
 
-    retry_count = 5
-
     def __init__(self):
         self.anal = SentimentIntensityAnalyzer()
         self.sentimantcher = defaultdict(list)
@@ -160,8 +174,6 @@ class FeelingsDotExe:
                 )
             ].append(e)
         del self.sentimantcher[0.0]  # Yachttsy
-        print(f"SENTIMATNCHDFSKJ IS {len(self.sentimantcher)} LONG")
-        pprint(self.sentimantcher)
 
     async def command(self, message, lower):
         reactions_to_send = []
@@ -178,7 +190,6 @@ class FeelingsDotExe:
         reaction = self.sentimantcher[
             round(self.anal.polarity_scores(message.content)["compound"], 2)
         ]
-        print(reaction)
         if reaction:
             reactions_to_send.append(random.choice(reaction))
 
@@ -407,22 +418,5 @@ class PleaseClap:
         return False
 
 
-# Responses to try, in order. Each response returns True if it consumes the event,
-# Otherwise False is returned, and the next response is attempted.
-responses = [
-    Standing(),
-    IgnoreMe(),
-    FeelingsDotExe(),
-    Counting(),
-    Blizzard(),
-    DontBeHasty(),
-    Question(),
-    LaughAtFools(),
-    SaveFromChecks(),
-    AlanPls(),
-    HomophoneHelper(),
-    Oof(),
-    PleaseClap(),
-]
 # Actually kicks things off ==================================================
 client.run(token)
