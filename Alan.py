@@ -411,16 +411,7 @@ class StealFace:
     async def command(self, message, lower):
         if random.randrange(1, 500) == 1:
             member_me = message.author.guild.me
-            my_name = member_me.name
-            new_name = message.author.nick or message.author.name
-            await member_me.edit(nick=new_name)
-
-            try:
-                await message.author.edit(nick=my_name)
-            except Exception as e:
-                print(
-                    f"Tried to steal {message.author.nick}'s face, but only pirated it."
-                )
+            await member_me.edit(nick="Was this wise?")
             return True
         return False
 
