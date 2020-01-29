@@ -407,15 +407,6 @@ class PleaseClap:
         return False
 
 
-class StealFace:
-    async def command(self, message, lower):
-        if random.randrange(1, 500) == 1:
-            member_me = message.author.guild.me
-            await member_me.edit(nick="Was this wise?")
-            return True
-        return False
-
-
 # Responses to try, in order. Each response returns True if it consumes the event,
 # Otherwise False is returned, and the next response is attempted.
 responses = [
@@ -432,7 +423,6 @@ responses = [
     HomophoneHelper(),
     Oof(),
     PleaseClap(),
-    StealFace(),
 ]
 # Actually kicks things off ==================================================
 client.run(token)
