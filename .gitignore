@@ -5,6 +5,10 @@ token
 *.swp
 ignored_users
 
+# Audio Appeasements
+ffmpeg.exe
+latest.mp3
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
