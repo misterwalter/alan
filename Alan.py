@@ -54,16 +54,9 @@ async def on_ready():
         HangOut(),
     ]
 
-@client.event
-async def on_voice_state_update(member, before, after):
-    # super().on_voice_state_update(*args, **kwargs)
-    print(member)
-    print(f"on_voice_state_update data: {after}::\n::{dir(after)}")
-    # for thing in dir(before.channel):
-    #     print(str(thing) + " :: " + str(getattr(before.channel, thing)))
-    # for thing in dir(after):
-    #     print(str(thing) + " :: " + str(getattr(after, thing)))
-    # await before.channel.connect()
+# # Use this to trigger on voice events
+# @client.event
+# async def on_voice_state_update(member, before, after):
 
 
 @client.event
@@ -434,6 +427,7 @@ class PleaseClap:
 
 
 class HangOut:
+    voice_client = None
 
     async def command(self, message, lower):
         if "hang out" in lower and "alan" in lower and message.guild and message.guild.voice_channels:
@@ -441,8 +435,9 @@ class HangOut:
             await message.channel.send("On my way! 8D")
             for channel in voice_channels:
                 if message.author in channel.members:
-                    voice_client = await channel.connect()
-                    asyncio.sleep(3)
+                    if voice_client is not None:
+                        voice_client = await channel.connect()
+                    await asyncio.sleep(3)
                     engine.save_to_file(f"Hewwo {message.author.nick}! uwu", "latest.mp3")
                     engine.runAndWait()
                     audio_source = discord.FFmpegPCMAudio("latest.mp3")
