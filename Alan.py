@@ -4,9 +4,11 @@ import datetime
 from pprint import pprint
 import random
 import re
+import time
 
+import pyttsx3
 import discord
-from emoji import EMOJI_ALIAS_UNICODE
+from emoji import EMOJI_UNICODE_ENGLISH
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Load account token and dads from other file
@@ -17,12 +19,13 @@ dads = [x.strip() for x in dads]
 
 
 # Global Initializations
+engine = pyttsx3.init()
 global client
 client = discord.Client()
 known_emoji = []
 
 # Process Dictionaries
-EMOJI_ALIAS_UNICODE = {k.lower(): v for k, v in EMOJI_ALIAS_UNICODE.items()}
+EMOJI_UNICODE_ENGLISH = {k.lower(): v for k, v in EMOJI_UNICODE_ENGLISH.items()}
 
 
 # Events =====================================================================
@@ -48,7 +51,19 @@ async def on_ready():
         HomophoneHelper(),
         Oof(),
         PleaseClap(),
+        HangOut(),
     ]
+
+@client.event
+async def on_voice_state_update(member, before, after):
+    # super().on_voice_state_update(*args, **kwargs)
+    print(member)
+    print(f"on_voice_state_update data: {after}::\n::{dir(after)}")
+    # for thing in dir(before.channel):
+    #     print(str(thing) + " :: " + str(getattr(before.channel, thing)))
+    # for thing in dir(after):
+    #     print(str(thing) + " :: " + str(getattr(after, thing)))
+    # await before.channel.connect()
 
 
 @client.event
@@ -167,7 +182,7 @@ class FeelingsDotExe:
     def __init__(self):
         self.anal = SentimentIntensityAnalyzer()
         self.sentimantcher = defaultdict(list)
-        for e in EMOJI_ALIAS_UNICODE:
+        for e in EMOJI_UNICODE_ENGLISH:
             self.sentimantcher[
                 round(
                     self.anal.polarity_scores(e[1:-1].replace("_", " "))["compound"], 2
@@ -183,7 +198,7 @@ class FeelingsDotExe:
         words = [word for word in words if len(word) > 2]
         # Check single words
         for word in words:
-            if f":{word}:" in EMOJI_ALIAS_UNICODE:
+            if f":{word}:" in EMOJI_UNICODE_ENGLISH:
                 reactions_to_send.append(f":{word}:")
 
         # Add sentimental
@@ -195,7 +210,7 @@ class FeelingsDotExe:
 
         for react in reactions_to_send:
             try:
-                await message.add_reaction(EMOJI_ALIAS_UNICODE[react])
+                await message.add_reaction(EMOJI_UNICODE_ENGLISH[react])
             except:
                 print(f"FAILED EMOJI: {react}")
         return False  # Never consume the event
@@ -236,7 +251,7 @@ class Blizzard:
 
 class DontBeHasty:
     async def command(self, message, lower):
-        if "now" in lower and random.randrange(1, 20) is 1:
+        if "now" in lower and random.randrange(1, 20) == 1:
             await slow_talk(
                 message, "Now, don't be hasty young {}.".format(message.author.mention)
             )
@@ -415,6 +430,24 @@ class PleaseClap:
             except Exception:
                 return True
             return True
+        return False
+
+
+class HangOut:
+
+    async def command(self, message, lower):
+        if "hang out" in lower and "alan" in lower and message.guild and message.guild.voice_channels:
+            voice_channels = message.guild.voice_channels
+            await message.channel.send("On my way! 8D")
+            for channel in voice_channels:
+                if message.author in channel.members:
+                    voice_client = await channel.connect()
+                    asyncio.sleep(3)
+                    engine.save_to_file(f"Hewwo {message.author.nick}! uwu", "latest.mp3")
+                    engine.runAndWait()
+                    audio_source = discord.FFmpegPCMAudio("latest.mp3")
+                    voice_client.play(audio_source)
+                    return True
         return False
 
 
