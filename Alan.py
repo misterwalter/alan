@@ -441,8 +441,9 @@ async def on_voice_state_update(member, before, after):
     channel = await get_channel(state_to_use.channel.id)
     if random.randrange(1, 100) == 69 or str(channel) == "General":
         await client.connect_voice(channel)
-        client.say_this("classic.mp3")
         await asyncio.sleep(4)
+        client.say_this("Oh. Shit. I'm sorry")
+        await asyncio.sleep(20)
         await client.disconnect_voice()
 
 
@@ -457,7 +458,7 @@ class HangOut:
                 if message.author in channel.members:
                     await client.connect_voice(channel)
                     await asyncio.sleep(3)
-                    client.say_this("personal.mp3")
+                    client.say_this(f"Hewwo, {str(message.author).split('#')[0]}, nice to hear you.")
                     await asyncio.sleep(20)
                     await client.disconnect_voice()
                     return True
