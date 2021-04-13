@@ -6,10 +6,11 @@ import random
 import re
 import time
 
-import pyttsx3
 import discord
 from emoji import EMOJI_UNICODE_ENGLISH
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+from alan_speaks import AlanSpeaks
 
 # Load account token and dads from other file
 token = open("token", "r").read().strip()
@@ -19,9 +20,8 @@ dads = [x.strip() for x in dads]
 
 
 # Global Initializations
-engine = pyttsx3.init()
 global client
-client = discord.Client()
+client = AlanSpeaks()
 known_emoji = []
 
 # Process Dictionaries
@@ -53,10 +53,6 @@ async def on_ready():
         PleaseClap(),
         HangOut(),
     ]
-
-# # Use this to trigger on voice events
-# @client.event
-# async def on_voice_state_update(member, before, after):
 
 
 @client.event
@@ -195,9 +191,8 @@ class FeelingsDotExe:
                 reactions_to_send.append(f":{word}:")
 
         # Add sentimental
-        reaction = self.sentimantcher[
-            round(self.anal.polarity_scores(message.content)["compound"], 2)
-        ]
+        score = round(self.anal.polarity_scores(message.content)["compound"], 2)
+        reaction = self.sentimantcher[score]
         if reaction:
             reactions_to_send.append(random.choice(reaction))
 
@@ -205,7 +200,9 @@ class FeelingsDotExe:
             try:
                 await message.add_reaction(EMOJI_UNICODE_ENGLISH[react])
             except:
-                print(f"FAILED EMOJI: {react}")
+                print(f"FAILED EMOJI: {react}, removing it from our list")
+                # TODO: Save the emoji's discord doesn't support between restarts
+                reaction.remove(react)
         return False  # Never consume the event
 
 class Counting:
@@ -426,8 +423,31 @@ class PleaseClap:
         return False
 
 
+async def get_channel(channel_id):
+    return discord.utils.get(client.get_all_channels(), **(dict(id = channel_id)))
+
+@client.event
+async def on_voice_state_update(member, before, after):
+    print('ON_VOICE_STATE_UPDATE')
+    # Never reply to yourself, that's gross.
+    if member == client.user:
+        print("Das me")
+        return
+
+    state_to_use = before and after
+    if state_to_use is None or state_to_use.channel is None:
+        return
+
+    channel = await get_channel(state_to_use.channel.id)
+    if random.randrange(1, 100) == 69 or str(channel) == "General":
+        await client.connect_voice(channel)
+        client.say_this("classic.mp3")
+        await asyncio.sleep(4)
+        await client.disconnect_voice()
+
+
+
 class HangOut:
-    voice_client = None
 
     async def command(self, message, lower):
         if "hang out" in lower and "alan" in lower and message.guild and message.guild.voice_channels:
@@ -435,16 +455,13 @@ class HangOut:
             await message.channel.send("On my way! 8D")
             for channel in voice_channels:
                 if message.author in channel.members:
-                    if voice_client is not None:
-                        voice_client = await channel.connect()
+                    await client.connect_voice(channel)
                     await asyncio.sleep(3)
-                    engine.save_to_file(f"Hewwo {message.author.nick}! uwu", "latest.mp3")
-                    engine.runAndWait()
-                    audio_source = discord.FFmpegPCMAudio("latest.mp3")
-                    voice_client.play(audio_source)
+                    client.say_this("personal.mp3")
+                    await asyncio.sleep(20)
+                    await client.disconnect_voice()
                     return True
         return False
-
 
 # Actually kicks things off ==================================================
 client.run(token)

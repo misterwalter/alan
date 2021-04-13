@@ -8,9 +8,9 @@ verify_ssl = true
 [packages]
 discord = "*"
 emoji = "*"
-vadersentiment = "*"
+vaderSentiment = "*"
 pyttsx3 = "*"
-pynacl = "*"
+PyNaCl = "*"
 
 [requires]
 python_version = "3.8"
