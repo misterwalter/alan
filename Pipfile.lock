@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3432aa3cb01750908d0180d717184a8ca0b044c8b0c088e2754cb2c17a07fffd"
+            "sha256": "bf21d2fc1c93c2c7697d2199f469a2be2568362b9a25073ab16cd92bab4801b3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -128,6 +128,13 @@
             ],
             "version": "==4.0.0"
         },
+        "click": {
+            "hashes": [
+                "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a",
+                "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"
+            ],
+            "version": "==7.1.2"
+        },
         "discord": {
             "hashes": [
                 "sha256:9d4debb4a37845543bd4b92cb195bc53a302797333e768e70344222857ff1559",
@@ -150,6 +157,14 @@
             ],
             "index": "pypi",
             "version": "==1.2.0"
+        },
+        "gtts": {
+            "hashes": [
+                "sha256:10efdecde4e272dee48ef0e8aa217de7f0bd5f914c368a92a6a14edbc0cd9cff",
+                "sha256:b53714d8377afb66df9f112158a6a832de26bc72cee3b8af321575d85f820a0f"
+            ],
+            "index": "pypi",
+            "version": "==2.2.2"
         },
         "idna": {
             "hashes": [
@@ -230,13 +245,6 @@
             ],
             "index": "pypi",
             "version": "==1.4.0"
-        },
-        "pyttsx3": {
-            "hashes": [
-                "sha256:a585b6d8cffc19bd92db1e0ccbd8aa9c6528dd2baa5a47045d6fed542a44aa19"
-            ],
-            "index": "pypi",
-            "version": "==2.90"
         },
         "requests": {
             "hashes": [

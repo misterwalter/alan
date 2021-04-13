@@ -9,8 +9,8 @@ verify_ssl = true
 discord = "*"
 emoji = "*"
 vaderSentiment = "*"
-pyttsx3 = "*"
 PyNaCl = "*"
+gTTS = "*"
 
 [requires]
 python_version = "3.8"
