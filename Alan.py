@@ -85,19 +85,21 @@ async def on_message(message):
 
 
 # These should be their own class
-@client.event
-async def on_reaction_add(reaction, user):
-    known_emoji.append(reaction.emoji)
-    if (user != client.user) and (kirby_url not in reaction.message.content):
-        await reaction.message.remove_reaction(reaction.emoji, client.user)
-    print(f"{len(known_emoji)} emoji known!")
+# @client.event
+# async def on_reaction_add(reaction, user):
+#     print("Reaction Added: " + reaction.emoji)
+#     known_emoji.append(reaction.emoji)
+#     if (user != client.user) and (kirby_url not in reaction.message.content) and (reaction.message.author.mention != "Wakter#9720"):
+#         await reaction.message.remove_reaction(reaction.emoji, client.user)
+#     print(f"{len(known_emoji)} emoji known!")
 
 
-@client.event
-async def on_reaction_remove(reaction, user):
-    known_emoji.append(reaction.emoji)
-    if user != client.user:
-        await reaction.message.add_reaction(reaction.emoji)
+# @client.event
+# async def on_reaction_remove(reaction, user):
+#     print("Reaction Removed: " + reaction.emoji)
+#     known_emoji.append(reaction.emoji)
+#     if user != client.user:
+#         await reaction.message.add_reaction(reaction.emoji)
 
 
 # General Utils ==============================================================
@@ -470,7 +472,7 @@ class HangOut:
 class NiceKirby:
 
     async def command(self, message, lower):
-        if kirby_url in message.content:
+        if kirby_url in message.content or (str(message.author) == "Kirbot#0000"):
             await message.add_reaction("<:nice:774099859346292800>")
             return True
         return False
