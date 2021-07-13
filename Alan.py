@@ -27,6 +27,8 @@ known_emoji = []
 # Process Dictionaries
 EMOJI_UNICODE_ENGLISH = {k.lower(): v for k, v in EMOJI_UNICODE_ENGLISH.items()}
 
+# In this house we nice kirby
+kirby_url = "https://www.models-resource.com/resources/big_icons/10/9291.png"
 
 # Events =====================================================================
 @client.event
@@ -38,6 +40,7 @@ async def on_ready():
     # Responses to try, in order. Each response returns True if it consumes the event,
     # Otherwise False is returned, and the next response is attempted.
     client.alan_responses = [
+        NiceKirby(),
         Standing(),
         IgnoreMe(),
         FeelingsDotExe(),
@@ -85,7 +88,7 @@ async def on_message(message):
 @client.event
 async def on_reaction_add(reaction, user):
     known_emoji.append(reaction.emoji)
-    if user != client.user:
+    if (user != client.user) and (kirby_url not in reaction.message.content):
         await reaction.message.remove_reaction(reaction.emoji, client.user)
     print(f"{len(known_emoji)} emoji known!")
 
@@ -462,6 +465,14 @@ class HangOut:
                     await asyncio.sleep(20)
                     await client.disconnect_voice()
                     return True
+        return False
+
+class NiceKirby:
+
+    async def command(self, message, lower):
+        if kirby_url in message.content:
+            await message.add_reaction("<:nice:774099859346292800>")
+            return True
         return False
 
 # Actually kicks things off ==================================================
