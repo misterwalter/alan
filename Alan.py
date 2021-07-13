@@ -108,7 +108,7 @@ async def slow_talk(
 ):
     msg = await message.channel.send(initial_message)
     await asyncio.sleep(delay)
-    for i in range(len(response) + 1):
+    for i in range(1, len(response) + 1):
         await msg.edit(content=response[:i])
         await asyncio.sleep(spacing)
 
