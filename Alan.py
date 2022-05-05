@@ -95,12 +95,12 @@ async def on_message(message):
 #     print(f"{len(known_emoji)} emoji known!")
 
 
-# @client.event
-# async def on_reaction_remove(reaction, user):
-#     print("Reaction Removed: " + reaction.emoji)
-#     known_emoji.append(reaction.emoji)
-#     if user != client.user:
-#         await reaction.message.add_reaction(reaction.emoji)
+@client.event
+async def on_reaction_remove(reaction, user):
+    print("Reaction Removed: " + reaction.emoji)
+    known_emoji.append(reaction.emoji)
+    if user != client.user:
+        await reaction.message.add_reaction(reaction.emoji)
 
 
 # General Utils ==============================================================
