@@ -524,7 +524,7 @@ class HangOut:
 class NiceKirby:
 
     async def command(self, message, lower):
-        if kirby_url in message.content or (str(message.author) == "Kirbot#0000"):
+        if kirby_url in message.content or (str(message.author) == "Kirbot#0000" or "kirby" in lower):
             await message.add_reaction("<:nice:774099859346292800>")
             return True
         return False
