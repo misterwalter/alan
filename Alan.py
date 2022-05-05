@@ -119,12 +119,20 @@ class WreckYourself:
     lethal_burns = [
         "wreck yourself",
         "get pwned n00b",
-        "bussy"
+        "bussy",
+    ]
+
+    death_sounds = [
+        "<:oof:780645607990886421>",
+        ":exploding_head:",
+        "<a:deathclawdance:598347253630894080>",
+        "<minecraft death sound>",
     ]
 
     async def command(self, message, lower):
         for burn in self.lethal_burns:
             if "wreck yourself" in lower:
+                await message.channel.send(death_sounds[random.randrange(0, len(death_sounds))])
                 exit()
 
 class Standing:
