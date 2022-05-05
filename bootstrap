@@ -10,6 +10,16 @@ else
 	echo "<@!1234567890abcdefgh>" > dads
 fi
 
+#Add ignored_users
+if [ -e ignored_users ]
+
+then 
+	echo "ignored_users file exists, not overwriting"
+else
+	echo "Creating an ignored_users file, replace the mention tag with people who want to be ignored."
+	echo "<@!1234567890abcdefgh>" > ignored_users
+fi
+
 # Add token example file - there's no good way to 
 if [ -e token ]
 then 
