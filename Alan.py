@@ -40,6 +40,7 @@ async def on_ready():
     # Responses to try, in order. Each response returns True if it consumes the event,
     # Otherwise False is returned, and the next response is attempted.
     client.alan_responses = [
+        WreckYourself(),
         NiceKirby(),
         Standing(),
         IgnoreMe(),
@@ -114,6 +115,18 @@ async def slow_talk(
 
 
 # Responses ==================================================================
+class WreckYourself:
+    lethal_burns = [
+        "wreck yourself",
+        "get pwned n00b",
+        "bussy"
+    ]
+
+    async def command(self, message, lower):
+        for burn in lethal_burns:
+            if "wreck yourself" in lower:
+                exit()
+
 class Standing:
     wait_until = datetime.datetime.now()
 
