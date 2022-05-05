@@ -1,8 +1,8 @@
-while :;
-    do python3 Alan.py;
-    echo "Alan has fallen!";
-    date;
-    sleep 1;
+while :; do
     git pull
-    echo "Engage Immortality Overdrive!";
+    pipenv run python3 Alan.py
+    echo "Alan has fallen!"
+    date
+    sleep 1
+    echo "Engage Immortality Overdrive!"
 done
