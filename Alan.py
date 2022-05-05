@@ -125,7 +125,7 @@ class WreckYourself:
     death_sounds = [
         "<:oof:780645607990886421>",
         ":exploding_head:",
-        "<a:deathclawdance:598347253630894080>",
+        "<:deathclawdance:598347253630894080>",
         "<minecraft death sound>",
     ]
 
