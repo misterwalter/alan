@@ -132,7 +132,7 @@ class WreckYourself:
     async def command(self, message, lower):
         for burn in self.lethal_burns:
             if "wreck yourself" in lower:
-                await message.channel.send(death_sounds[random.randrange(0, len(death_sounds))])
+                await message.channel.send(self.death_sounds[random.randrange(0, len(self.death_sounds))])
                 exit()
 
 class Standing:
