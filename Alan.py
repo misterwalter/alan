@@ -123,7 +123,7 @@ class WreckYourself:
     ]
 
     async def command(self, message, lower):
-        for burn in lethal_burns:
+        for burn in self.lethal_burns:
             if "wreck yourself" in lower:
                 exit()
 
