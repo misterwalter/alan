@@ -133,7 +133,6 @@ class WreckYourself:
         for burn in self.lethal_burns:
             if burn in lower:
                 await message.channel.send(self.death_sounds[random.randrange(0, len(self.death_sounds))])
-                await client.change_presence(status=discord.Status.offline)
                 exit()
 
 class Standing:
