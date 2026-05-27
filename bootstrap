@@ -21,12 +21,12 @@ else
 fi
 
 # Add token example file - there's no good way to 
-if [ -e token ]
+if [ -e .token ]
 then 
 	echo "token file exists, not overwriting"
 else
 	echo "Creating a token file, but you still need to add your bot's token!"
-	echo "Put your bot's token, not their Client ID or Client secret, into this file, replacing this text." > token
+	echo "Put your bot's token, not their Client ID or Client secret, into this file, replacing this text." > .token
 fi
 
 echo
